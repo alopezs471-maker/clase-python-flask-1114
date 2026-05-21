@@ -6,10 +6,14 @@
     <title>Clase Flask 1114</title>
   </head>
   <body>
-    <h1>HOLA</h1>
-   <a href="/">Inicio</a>
-    <a href="/acerca">Acerca</a>
-    <a href="/contacto">Contacto</a>
-   
+  <h1>COMO ESTAS</h1>
+<a href="/">Inicio</a>
+<a href="/acerca">Acerca</a>
+<a href="/contacto">Contacto</a>
+<ul>
+  {% for recurso in recursos %}
+    <li>{{ recurso }}</li>
+  {% endfor %}
+</ul>
   </body>
 </html>
