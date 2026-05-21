@@ -4,11 +4,15 @@
 
 Es un proyecto base de Flask.
 
+El objetivo del proyecto es construir paso a paso un Mini Portal de Clase Flask.
+Cada tarea agrega una pieza concreta para que el alumno entienda como se arma
+una aplicacion web desde lo mas simple hacia algo mas completo.
+
 Incluye:
 
 - una aplicacion minima en `app.py`
-- una vista HTML simple en `templates/index.html`
-- una consigna inicial en `tasks/tarea-1.md`
+- vistas HTML simples en `templates/`
+- consignas de trabajo en `tasks/`
 - comentarios breves dentro del codigo
 
 Incluye la configuracion minima para levantar el servidor y renderizar una vista inicial en la ruta `/`.
@@ -89,6 +93,9 @@ Abri esa direccion en el navegador.
 1. `app.py`
 2. `templates/index.html`
 3. `tasks/tarea-1.md`
+4. `tasks/tarea-2.md`
+5. `tasks/tarea-3.md`
+6. `tasks/tarea-4.md`
 
 ## Que hace cada parte
 
@@ -107,6 +114,13 @@ Es la vista HTML inicial del proyecto.
 - Flask la renderiza cuando se accede a la aplicacion
 - sirve como base para trabajar con plantillas
 
+### `templates/acerca.html` y `templates/contacto.html`
+
+Son paginas internas que se crean durante la tarea 3.
+
+- permiten practicar varias rutas
+- ayudan a entender la relacion entre URL, funcion y plantilla
+
 ### `requirements.txt`
 
 Lista las dependencias del proyecto.
@@ -123,6 +137,18 @@ Indica que archivos no se deben versionar.
 ### `tasks/tarea-1.md`
 
 Incluye una consigna inicial de trabajo.
+
+### `tasks/tarea-2.md`
+
+Introduce el paso de datos desde Python hacia una plantilla HTML.
+
+### `tasks/tarea-3.md`
+
+Introduce varias rutas y varias paginas dentro de una misma aplicacion Flask.
+
+### `tasks/tarea-4.md`
+
+Introduce listas de Python y bucles `{% for %}` en plantillas Jinja.
 
 ## Objetivo
 

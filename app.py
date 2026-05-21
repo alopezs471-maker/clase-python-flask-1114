@@ -13,6 +13,7 @@ app = Flask(__name__)
 def inicio():
     # `render_template` busca archivos dentro de la carpeta `templates`.
     return render_template("index.html")
+
 @app.route("/contacto")
 def contac():
     # `render_template` busca archivos dentro de la carpeta `templates`.
@@ -20,12 +21,20 @@ def contac():
 
 
 @app.route("/recursos")
-
+def recursos():
+    recursos = [
+    "Entorno virtual",
+    "Rutas en Flask",
+    "Plantillas HTML",
+    "Variables con Jinja"
+]
+    return render_template("recursos.html", recursos=recursos)
 
 @app.route("/acerca")
 def planeta():
     # `render_template` busca archivos dentro de la carpeta `templates`.
     return render_template("acerca.html")
+
 
 
 
