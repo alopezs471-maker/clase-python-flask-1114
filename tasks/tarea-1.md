@@ -1,46 +1,118 @@
-# Tarea 1 - Levantar una aplicacion Flask desde cero
+# Tarea 1 - Portal de Clase 1114: Estructura basica
 
-## Objetivo tecnico
+## Objetivo
 
-Poner en marcha el proyecto en tu entorno local, entender para que sirve cada pieza minima del setup y verificar que la aplicacion responde en el navegador.
+Construir la estructura inicial del **Portal de Clase 1114**. Este sera el sitio web donde estudiantes y profesor accederan a informacion de la clase.
 
-En esta primera clase no alcanza con "hacerlo andar". Tienes que empezar a distinguir que problema resuelve cada paso: aislamiento del entorno, instalacion de dependencias, arranque del servidor y renderizado de una plantilla HTML.
+En esta tarea vas a:
+- Levantar la aplicacion Flask
+- Crear la pagina de inicio
+- Entender la estructura basica
+
+## Concepto: ¿Que es el Portal de Clase?
+
+Es una aplicacion web donde:
+- Los estudiantes ven informacion de la clase
+- Ven tareas disponibles
+- Se pueden inscribir
+- Ven calificaciones
+
+Tu trabajo en estas 8 tareas es **construir este portal paso a paso**.
 
 ## Preparacion
 
-Para instalar dependencias y ejecutar el proyecto, sigue el `README.md`.
+1. Copia este proyecto a tu computadora
+2. Abre una terminal en la carpeta del proyecto
+3. Sigue los pasos del README.md para instalar dependencias
 
-## Consigna
+## Paso 1: Crear el entorno virtual
 
-1. Instala las dependencias y levanta la aplicacion siguiendo el `README.md`.
+Windows PowerShell:
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
 
-2. Abre la aplicacion en el navegador y comprueba que responde correctamente.
+Linux/Mac:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-3. Modifica la vista base y verifica el cambio:
+Verifica que veas (.venv) al inicio de tu terminal.
 
-   Edita `templates/index.html`, cambia al menos el `<title>` y el `<h1>`, guarda y recarga la pagina.
+## Paso 2: Instalar dependencias
 
-   Este paso existe para que veas la relacion concreta entre archivo fuente, servidor y resultado en navegador. Codigo que no observas, no lo entendes.
+```powershell
+pip install -r requirements.txt
+```
 
-## Preguntas de reflexion tecnica
+## Paso 3: Levanta la aplicacion
 
-1. Que problema concreto resuelve el entorno virtual en un proyecto Python?
-2. Que diferencia hay entre instalar `Flask` globalmente y hacerlo dentro de `.venv`?
-3. Por que `requirements.txt` forma parte del proyecto y no de tu maquina personal?
-4. Cuando ejecutas `python app.py`, que archivo actua como punto de entrada y por que?
-5. Que relacion hay entre la ruta `/`, la funcion `inicio()` y el archivo `templates/index.html`?
-6. Que evidencia te da la terminal de que el servidor arranco correctamente?
-7. Si cambias el HTML y el navegador muestra otra cosa, que te demuestra eso sobre el flujo entre backend y frontend en este proyecto?
+```powershell
+python app.py
+```
+
+Deberias ver en la terminal:
+```
+ * Running on http://127.0.0.1:5000
+```
+
+## Paso 4: Abre el navegador
+
+Ve a http://127.0.0.1:5000 en tu navegador.
+
+Deberias ver una pagina de bienvenida simple.
+
+## Paso 5: Modifica el portal
+
+Abre templates/index.html y cambia:
+
+1. El <title> a: Portal Clase 1114 - Python y Flask
+
+2. El <h1> a: Bienvenidos al Portal de Clase 1114
+
+3. Agrega un nuevo <p> que diga:
+```html
+<p>Profesor: Henry Ortegon</p>
+<p>Horario: Miercoles 16:45-18:10 | Jueves 12:30-14:20</p>
+```
+
+Guarda el archivo y recarga la pagina en el navegador (Ctrl+R).
+
+Deberias ver tus cambios inmediatamente.
+
+## Paso 6: Verifica en la terminal
+
+En la terminal donde corre Flask, deberias ver lineas como:
+```
+127.0.0.1 - - [fecha hora] "GET / HTTP/1.1" 200 -
+```
+
+Eso significa que el servidor recibio la solicitud y respondo exitosamente (200 = OK).
+
+## Preguntas de reflexion
+
+1. ¿Que rol tiene app.py en todo esto?
+2. ¿Por que necesitas el entorno virtual (.venv)?
+3. ¿Donde se almacena el HTML que ves en el navegador?
+4. Si cambias el HTML sin guardar, ¿se refleja el cambio en el navegador? ¿Por que?
+5. ¿Que es render_template y por que Flask lo usa?
 
 ## Entregable
 
-La tarea se considera completa si puedes demostrar estas cuatro cosas:
+Debes demostrar:
 
-1. El entorno virtual esta creado y activado.
-2. Las dependencias se instalaron desde `requirements.txt`.
-3. La aplicacion corre en tu maquina y responde en el navegador.
-4. Modificaste `templates/index.html` y podes señalar exactamente donde se refleja ese cambio.
+1. El entorno virtual activado en la terminal
+2. La aplicacion corriendo en http://127.0.0.1:5000
+3. El titulo del navegador dice "Portal Clase 1114 - Python y Flask"
+4. El <h1> muestra "Bienvenidos al Portal de Clase 1114"
+5. Muestra el nombre del profesor y horario
+6. Una captura de pantalla mostrando todo funcionando
 
-## Cierre
+## Resumen
 
-No estas aprendiendo a tipear comandos. Estas empezando a construir criterio tecnico. Si hoy entiendes que levanta el servidor, de donde salen las dependencias y por que Flask encuentra esa plantilla, entonces arrancaste bien. Simple no significa superficial.
+Hoy activaste tu primer proyecto Flask real. El Portal de Clase apenas empieza.
+En la siguiente tarea, vamos a hacer que los datos (nombre profesor, horario) vengan desde Python, no desde HTML fijo.
+
+Eso es lo poderoso de los frameworks web: separar datos de presentacion.

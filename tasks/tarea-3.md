@@ -1,99 +1,225 @@
-# Tarea 3 - Crear varias rutas y varias paginas en Flask
+# Tarea 3 - Multiple paginas: Inicio, Informacion, Recursos, Tareas
 
-## Objetivo tecnico
+## Objetivo
 
-Convertir la app en un mini portal con varias paginas conectadas entre si.
-En esta tarea debes entender el flujo completo: `URL -> funcion Python -> plantilla HTML`.
+Crear un portal con **multiples paginas** conectadas.
+
+Hasta ahora solo tenemos `/` (inicio). Ahora vamos a agregar:
+- `/informacion` - Detalles de la clase
+- `/recursos` - Links a documentacion
+- `/tareas` - Lista de tareas entregables
+
+## ¿Por que es importante?
+
+Un portal real no es una sola pagina. Los usuarios navegan entre secciones.
+Aprenderas a:
+- Crear multiples rutas
+- Pasar datos diferentes a cada ruta
+- Conectarlas con un menu de navegacion
 
 ## Preparacion
 
-1. Ejecuta la app con `python app.py`.
-2. Verifica que `http://127.0.0.1:5000/` responde correctamente.
-3. Ten abierto `app.py` y la carpeta `templates/`.
+1. Asegurate que Tarea 2 funciona
+2. Crea dos archivos HTML nuevos: `templates/informacion.html` y `templates/recursos.html`
 
-## Guia paso a paso
+## Paso 1: Agregar rutas a app.py
 
-### Paso 1: Mantener la ruta principal
-
-No rompas la ruta `/` que ya existe. Debe seguir renderizando `index.html`.
-
-### Paso 2: Crear la ruta `/acerca`
-
-En `app.py`, agrega:
+Abre `app.py` y agrega nuevas funciones:
 
 ```python
-@app.route("/acerca")
-def acerca():
-    return render_template("acerca.html")
+@app.route("/informacion")
+def informacion():
+    datos = {
+        "aula": "215",
+        "profesor": "Henry Ortegon",
+        "horario": "Miercoles 16:45-18:10 | Jueves 12:30-14:20",
+        "objetivos": [
+            "Aprender Python basico",
+            "Entender Flask y aplicaciones web",
+            "Construir un portal web real"
+        ]
+    }
+    return render_template("informacion.html", **datos)
+
+@app.route("/recursos")
+def recursos():
+    enlaces = [
+        {"nombre": "Documentacion Flask", "url": "https://flask.palletsprojects.com"},
+        {"nombre": "Tutorial Python", "url": "https://docs.python.org"},
+        {"nombre": "GitHub del Profesor", "url": "https://github.com/hortegon"}
+    ]
+    return render_template("recursos.html", enlaces=enlaces)
+
+@app.route("/tareas")
+def tareas():
+    lista_tareas = [
+        {"numero": 1, "titulo": "Portal base", "fecha": "25/05/2026"},
+        {"numero": 2, "titulo": "Datos dinamicos", "fecha": "30/05/2026"},
+        {"numero": 3, "titulo": "Multiple paginas", "fecha": "05/06/2026"}
+    ]
+    return render_template("tareas.html", tareas=lista_tareas)
 ```
 
-### Paso 3: Crear la ruta `/contacto`
+## Paso 2: Actualizar index.html con menu
 
-En `app.py`, agrega:
-
-```python
-@app.route("/contacto")
-def contacto():
-    return render_template("contacto.html")
-```
-
-### Paso 4: Crear las plantillas nuevas
-
-Crea dos archivos:
-
-1. `templates/acerca.html`
-2. `templates/contacto.html`
-
-Cada archivo debe tener estructura HTML basica y un titulo visible (`<h1>`) para distinguir la pagina.
-
-### Paso 5: Agregar navegacion entre paginas
-
-En `index.html`, `acerca.html` y `contacto.html`, agrega enlaces:
+En `templates/index.html`, agrega un menu de navegacion:
 
 ```html
-<a href="/">Inicio</a>
-<a href="/acerca">Acerca</a>
-<a href="/contacto">Contacto</a>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Portal Clase 1114</title>
+</head>
+<body>
+    <!-- MENU DE NAVEGACION -->
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/informacion">Informacion</a></li>
+            <li><a href="/recursos">Recursos</a></li>
+            <li><a href="/tareas">Tareas</a></li>
+        </ul>
+    </nav>
+
+    <h1>Bienvenidos al Portal de Clase 1114</h1>
+    <p>Profesor: {{ profesor }}</p>
+    <p>Horario: {{ horario }}</p>
+</body>
+</html>
 ```
 
-Ideal: que el bloque de navegacion este en las 3 paginas.
+## Paso 3: Crear templates/informacion.html
 
-### Paso 6: Verificar en navegador
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Informacion - Portal Clase 1114</title>
+</head>
+<body>
+    <!-- MENU -->
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/informacion">Informacion</a></li>
+            <li><a href="/recursos">Recursos</a></li>
+            <li><a href="/tareas">Tareas</a></li>
+        </ul>
+    </nav>
 
-Abre manualmente estas URLs:
+    <h1>Informacion de la Clase</h1>
+    <p><strong>Aula:</strong> {{ aula }}</p>
+    <p><strong>Profesor:</strong> {{ profesor }}</p>
+    <p><strong>Horario:</strong> {{ horario }}</p>
 
-1. `http://127.0.0.1:5000/`
-2. `http://127.0.0.1:5000/acerca`
-3. `http://127.0.0.1:5000/contacto`
+    <h2>Objetivos</h2>
+    <ul>
+        <!-- Aqui va el bucle for (Tarea 4) -->
+    </ul>
+</body>
+</html>
+```
 
-Luego navega solo con los links para comprobar que todo conecta.
+## Paso 4: Crear templates/recursos.html
 
-## Checklist de validacion
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recursos - Portal Clase 1114</title>
+</head>
+<body>
+    <!-- MENU -->
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/informacion">Informacion</a></li>
+            <li><a href="/recursos">Recursos</a></li>
+            <li><a href="/tareas">Tareas</a></li>
+        </ul>
+    </nav>
 
-1. `app.py` contiene `/`, `/acerca` y `/contacto`.
-2. Existen `index.html`, `acerca.html` y `contacto.html`.
-3. Las tres paginas cargan sin error.
-4. Hay navegacion entre las tres rutas.
+    <h1>Recursos Educativos</h1>
+    <p>Enlaces utiles para aprender mas:</p>
 
-## Errores comunes (y como corregirlos)
+    <!-- Aqui va el bucle for (Tarea 4) -->
+</body>
+</html>
+```
 
-1. `TemplateNotFound`: la ruta existe, pero falta el archivo HTML.
-   Solucion: crea el archivo dentro de `templates/` con el nombre exacto.
-2. Error 404: existe el HTML, pero no la ruta en `app.py`.
-   Solucion: agrega el `@app.route(...)` y su funcion.
-3. Link mal escrito (por ejemplo `/contato`).
-   Solucion: revisa que `href` coincida exactamente con la ruta.
+## Paso 5: Crear templates/tareas.html
 
-## Preguntas de reflexion tecnica
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tareas - Portal Clase 1114</title>
+</head>
+<body>
+    <!-- MENU -->
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/informacion">Informacion</a></li>
+            <li><a href="/recursos">Recursos</a></li>
+            <li><a href="/tareas">Tareas</a></li>
+        </ul>
+    </nav>
 
-1. Que parte define la URL publica: el nombre de la funcion o `@app.route(...)`?
-2. Si cambias el nombre de la funcion, que debe mantenerse para no romper la URL?
-3. Por que separar cada seccion en su propia plantilla mejora el proyecto?
+    <h1>Tareas Entregables</h1>
+    
+    <!-- Aqui va el bucle for (Tarea 4) -->
+</body>
+</html>
+```
+
+## Paso 6: Verifica
+
+Guarda todos los archivos y recarga la app. En el navegador:
+- Ve a `http://127.0.0.1:5000/informacion`
+- Ve a `http://127.0.0.1:5000/recursos`
+- Ve a `http://127.0.0.1:5000/tareas`
+
+El menu deberia permitirte navegar entre paginas.
+
+## Conceptos clave
+
+**Rutas** conectan URLs a funciones Python.
+
+```python
+@app.route("/pagina")  # La URL
+def nombre_funcion():  # Que ocurre
+    return render_template("pagina.html")  # Que se muestra
+```
+
+**Links** en HTML conectan las paginas:
+
+```html
+<a href="/informacion">Informacion</a>
+```
+
+## Preguntas de reflexion
+
+1. Si tienes 10 paginas diferentes, ¿cuantas funciones necesitas en app.py?
+2. ¿Que pasa si cambias el nombre de una ruta pero no actualizas los links?
+3. ¿Por que es importante tener un menu consistente en todas las paginas?
 
 ## Entregable
 
-1. `app.py` actualizado con las 3 rutas.
-2. `templates/acerca.html` y `templates/contacto.html` creados.
-3. Navegacion funcional entre las tres paginas.
-4. Explicacion corta de un flujo completo, por ejemplo:
-   `/contacto -> contacto() -> render_template("contacto.html") -> navegador`.
+Debes mostrar:
+
+1. `app.py` con 4 rutas diferentes (/, /informacion, /recursos, /tareas)
+2. 4 archivos HTML en `templates/` (index, informacion, recursos, tareas)
+3. Un menu de navegacion en todas las paginas
+4. Capturas navegando entre las 4 paginas diferentes
+
+## Resumen
+
+Ya tienes un portal web con **navegacion**. Las paginas estan conectadas.
+
+En la siguiente tarea, vamos a llenar las listas de tareas y recursos usando **bucles en Jinja2**.
+

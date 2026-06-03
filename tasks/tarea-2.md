@@ -1,106 +1,155 @@
-# Tarea 2 - Datos dinamicos en una plantilla Flask
+# Tarea 2 - Datos dinamicos: Profesor, horario desde Python
 
-## Objetivo tecnico
+## Objetivo
 
-Pasar datos desde `app.py` hacia `templates/index.html` usando `render_template`.
-La meta es que el HTML no sea fijo: debe mostrar informacion enviada por Python.
+En Tarea 1, los datos (profesor, horario) estaban **hardcodeados** en HTML.
+Ahora vamos a sacarlos desde **Python y enviarlos a la plantilla**.
+
+Esto es lo que hace poderoso a Flask: separar datos de presentacion.
+
+## ¿Por que es importante?
+
+Si cambias el horario de la clase en 3 meses, ¿donde lo cambias?
+- Forma vieja (Tarea 1): Editar HTML manualmente
+- Forma nueva (Tarea 2): Cambiar una variable en Python
+
+La forma nueva **escala mejor**.
 
 ## Preparacion
 
-1. Asegurate de tener el proyecto funcionando (ver `README.md`).
-2. Levanta la app y deja abierto el navegador en `http://127.0.0.1:5000/`.
+1. Asegurate que la Tarea 1 funciona (el portal levanta sin errores)
+2. Ten abierto `app.py` en tu editor
 
-## Guia paso a paso
+## Paso 1: Ver el codigo actual
 
-### Paso 1: Revisar el punto de partida
-
-Abre `app.py` y ubica la ruta `/`.
-Deberias ver una funcion que retorna algo parecido a:
+En `app.py` deberias tener algo asi:
 
 ```python
-return render_template("index.html")
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route("/")
+def inicio():
+    return render_template("index.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
 ```
 
-Ese retorno todavia no envia datos.
+## Paso 2: Agregar variables en Python
 
-### Paso 2: Definir variables en Python
-
-Dentro de la funcion de la ruta `/`, crea al menos 3 variables.
-Ejemplo:
+Modifica la funcion `inicio()` para crear variables:
 
 ```python
-titulo = "Panel de inicio"
-usuario = "Ana"
-mensaje = "Bienvenida a Flask"
+@app.route("/")
+def inicio():
+    # Datos del portal
+    nombre_profesor = "Henry Ortegon"
+    email_profesor = "henry@kyrbot.com"
+    horario = "Miercoles 16:45-18:10 | Jueves 12:30-14:20"
+    aula = "215"
+    descripcion = "Aprenderemos Python, Flask y construiremos un portal web real"
+    
+    # Pasar los datos a la plantilla
+    return render_template(
+        "index.html",
+        profesor=nombre_profesor,
+        email=email_profesor,
+        horario=horario,
+        aula=aula,
+        descripcion=descripcion
+    )
 ```
 
-Puedes usar otros nombres y valores, pero deben tener sentido en la pagina.
+## Paso 3: Usar variables en HTML
 
-### Paso 3: Enviar variables a la plantilla
-
-Modifica `render_template` para pasar esas variables:
-
-```python
-return render_template(
-    "index.html",
-    titulo=titulo,
-    usuario=usuario,
-    mensaje=mensaje
-)
-```
-
-Regla importante: el nombre a la izquierda (`titulo=`) es el nombre que usaras en HTML.
-
-### Paso 4: Mostrar variables en `index.html`
-
-Abre `templates/index.html` y agrega las variables con Jinja2:
+Abre `templates/index.html` y reemplaza los datos fijos por variables Jinja2:
 
 ```html
-<title>{{ titulo }}</title>
-<h1>{{ mensaje }}</h1>
-<p>Usuario activo: {{ usuario }}</p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal {{ profesor }}</title>
+</head>
+<body>
+    <h1>Bienvenidos al Portal de Clase 1114</h1>
+    
+    <h2>Informacion de la clase</h2>
+    <p><strong>Profesor:</strong> {{ profesor }}</p>
+    <p><strong>Email:</strong> {{ email }}</p>
+    <p><strong>Horario:</strong> {{ horario }}</p>
+    <p><strong>Aula:</strong> {{ aula }}</p>
+    <p><strong>Descripcion:</strong> {{ descripcion }}</p>
+</body>
+</html>
 ```
 
-Minimo requerido: mostrar 3 variables en lugares visibles de la pagina.
+## Paso 4: Guarda y verifica
 
-### Paso 5: Guardar y verificar
+1. Guarda `app.py`
+2. Flask deberia auto-reiniciar (veras mensajes en la terminal)
+3. Recarga el navegador (Ctrl+R)
 
-1. Guarda `app.py` y `templates/index.html`.
-2. Recarga el navegador.
-3. Comprueba que aparecen los valores que enviaste desde Python.
+Deberias ver los mismos datos, pero ahora **vienen desde Python**.
 
-Si cambias un valor en `app.py` y se refleja en la pagina, lo hiciste bien.
+## Paso 5: Prueba el cambio
 
-## Checklist de validacion
+Cambia una variable en `app.py`. Por ejemplo:
 
-Marca cada punto antes de entregar:
+```python
+nombre_profesor = "Prof. Henry - Kyrbot Innovations"
+```
 
-1. La ruta `/` en `app.py` fue modificada.
-2. `render_template` recibe al menos 3 variables.
-3. `index.html` muestra esas 3 variables con `{{ ... }}`.
-4. El resultado se ve correctamente en el navegador.
+Guarda, y verifica que el cambio aparece en el navegador.
 
-## Errores comunes (y como corregirlos)
+**Eso demuestra que los datos vienen desde Python, no del HTML.**
 
-1. Error de nombre: en Python envias `usuario`, pero en HTML escribes `{{ user }}`.
-   Solucion: usa exactamente el mismo nombre.
-2. Olvidar llaves dobles: escribir `{ usuario }` en vez de `{{ usuario }}`.
-   Solucion: siempre usar doble llave en Jinja2.
-3. Editar archivo incorrecto o no guardar cambios.
-   Solucion: verifica que editaste `templates/index.html` y guarda ambos archivos.
+## Conceptos clave
 
-## Preguntas de reflexion tecnica
+**Jinja2** es el motor de plantillas que Flask usa.
 
-1. Que ventaja tiene cambiar datos desde `app.py` sin tocar todo el HTML?
-2. Que diferencia hay entre una variable definida en Python y una variable mostrada en Jinja2?
-3. Si borras una variable de `render_template`, que parte visual deja de funcionar?
+En HTML escribes `{{ variable }}` para mostrar valores de Python.
+
+Ejemplo:
+```python
+# En Python
+nombre = "Ana"
+edad = 25
+
+# En HTML con Jinja2
+<p>Nombre: {{ nombre }}</p>
+<p>Edad: {{ edad }}</p>
+
+# Resultado en navegador
+Nombre: Ana
+Edad: 25
+```
+
+## Preguntas de reflexion
+
+1. ¿Cual es la diferencia entre escribir datos en HTML vs guardarlos en variables Python?
+2. Si el profesor cambia mañana, ¿cuantos archivos necesitas editar con este enfoque?
+3. ¿Que ventaja tiene usar `{{ }}` en lugar de escribir texto fijo?
+4. ¿Donde se ejecuta Jinja2: en la computadora del usuario o en el servidor?
 
 ## Entregable
 
-Debes entregar:
+Debes mostrar:
 
-1. `app.py` actualizado.
-2. `templates/index.html` actualizado.
-3. Evidencia minima:
-   - Lista de las 3 variables usadas.
-   - En que linea o seccion del HTML se muestra cada una.
+1. El archivo `app.py` con al menos 5 variables (profesor, email, horario, aula, descripcion)
+2. El archivo `templates/index.html` usando `{{ }}` para mostrar esas variables
+3. Una captura del navegador mostrando los datos dinamicos
+4. Evidencia de que cambiar una variable en Python se refleja en el navegador
+
+## Resumen
+
+Ahora entiendes la **separacion de responsabilidades**:
+- Python maneja los datos
+- HTML maneja la presentacion
+- Jinja2 conecta ambos
+
+En la siguiente tarea, vamos a agregar **mas paginas** al portal (Informacion, Recursos, Tareas).
+

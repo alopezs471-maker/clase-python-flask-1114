@@ -1,111 +1,149 @@
-# Tarea 4 - Mostrar listas con Jinja en Flask
+# Tarea 4 - Listas dinamicas: Bucles for en Jinja2
 
-## Objetivo tecnico
+## Objetivo
 
-Agregar la pagina `/recursos` y mostrar una coleccion de datos con un bucle de Jinja.
-La meta es pasar de variables sueltas a renderizar listas completas.
+Mostrar **listas** de tareas y recursos usando bucles `{% for %}` en Jinja2.
+
+Hasta ahora pasamos datos simples (strings). Ahora vamos a pasar **listas** y recorrerlas en HTML.
+
+## ¿Por que es importante?
+
+Si tienes 100 tareas, no vas a escribir 100 lineas de HTML. Los bucles automatizan eso.
 
 ## Preparacion
 
-Antes de empezar, valida que la tarea 3 funciona:
+1. Asegurate que Tarea 3 funciona
+2. Los datos ya existen en `app.py` (listas de tareas, enlaces, objetivos)
 
-1. `/`
-2. `/acerca`
-3. `/contacto`
+## Paso 1: Agregar bucles en tareas.html
 
-Si alguna ruta falla, arreglala primero y luego continua.
+En `templates/tareas.html`, reemplaza el comentario con:
 
-## Guia paso a paso
-
-### Paso 1: Crear la ruta `/recursos`
-
-En `app.py`, agrega una nueva funcion con su decorador.
-
-### Paso 2: Definir la lista en Python
-
-Dentro de esa funcion, crea una lista con minimo 4 elementos.
-Ejemplo:
-
-```python
-recursos = [
-    "Entorno virtual",
-    "Rutas en Flask",
-    "Plantillas HTML",
-    "Variables con Jinja"
-]
+```html
+<table border="1">
+    <thead>
+        <tr>
+            <th>Numero</th>
+            <th>Titulo</th>
+            <th>Fecha entrega</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tarea in tareas %}
+        <tr>
+            <td>{{ tarea.numero }}</td>
+            <td>{{ tarea.titulo }}</td>
+            <td>{{ tarea.fecha }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 ```
 
-### Paso 3: Enviar la lista a la plantilla
+**Explicacion:**
+- `{% for tarea in tareas %}` - Recorre cada tarea de la lista
+- `{{ tarea.numero }}` - Accede a la propiedad `numero` de esa tarea
+- `{% endfor %}` - Termina el bucle
 
-Retorna `render_template` pasando la variable:
+## Paso 2: Agregar bucles en recursos.html
 
-```python
-return render_template("recursos.html", recursos=recursos)
-```
-
-### Paso 4: Crear `templates/recursos.html`
-
-Crea el archivo y agrega estructura HTML basica.
-Incluye un titulo como `<h1>Recursos de clase</h1>`.
-
-### Paso 5: Recorrer la lista con Jinja
-
-En `recursos.html`, usa un `<ul>` con bucle:
+En `templates/recursos.html`:
 
 ```html
 <ul>
-  {% for recurso in recursos %}
-    <li>{{ recurso }}</li>
-  {% endfor %}
+    {% for enlace in enlaces %}
+    <li>
+        <a href="{{ enlace.url }}">{{ enlace.nombre }}</a>
+    </li>
+    {% endfor %}
 </ul>
 ```
 
-Ese bloque debe generar un `<li>` por cada elemento de la lista de Python.
+## Paso 3: Agregar bucles en informacion.html
 
-### Paso 6: Integrar navegacion
+En `templates/informacion.html`:
 
-Agrega enlace a `/recursos` desde `index.html`, `acerca.html` y `contacto.html`.
-Tambien incluye links de regreso desde `recursos.html` al resto de paginas.
+```html
+<h2>Objetivos de la clase</h2>
+<ul>
+    {% for objetivo in objetivos %}
+    <li>{{ objetivo }}</li>
+    {% endfor %}
+</ul>
+```
 
-### Paso 7: Verificar en navegador
+## Paso 4: Verifica
 
-1. Abre `http://127.0.0.1:5000/recursos`.
-2. Comprueba que se vean los 4 (o mas) elementos.
-3. Cambia un texto en la lista de `app.py`, guarda y recarga.
-4. Verifica que el cambio aparece en la pagina.
+Guarda todo y recarga las paginas:
+- `/tareas` deberia mostrar una tabla con las 3 tareas
+- `/recursos` deberia mostrar una lista de enlaces
+- `/informacion` deberia mostrar los objetivos
 
-## Checklist de validacion
+## Paso 5: Agrega mas datos
 
-1. Existe la ruta `/recursos` en `app.py`.
-2. Existe `templates/recursos.html`.
-3. La lista tiene al menos 4 elementos en Python.
-4. El HTML usa `{% for %}` y `{{ recurso }}`.
-5. La pagina muestra la lista correctamente.
-6. Hay navegacion entre todas las paginas del mini portal.
+En `app.py`, en la funcion `recursos()`, agrega mas enlaces:
 
-## Errores comunes (y como corregirlos)
+```python
+enlaces = [
+    {"nombre": "Documentacion Flask", "url": "https://flask.palletsprojects.com"},
+    {"nombre": "Tutorial Python", "url": "https://docs.python.org"},
+    {"nombre": "GitHub del Profesor", "url": "https://github.com/hortegon"},
+    {"nombre": "MDN - HTML y CSS", "url": "https://developer.mozilla.org"}
+]
+```
 
-1. Error de sintaxis en Jinja: olvidar `%` o llaves.
-   Solucion: revisa el formato exacto de `{% for ... %}` y `{% endfor %}`.
-2. Nombre inconsistente: en Python `recursos`, en HTML `items`.
-   Solucion: usa el mismo nombre en ambos lados.
-3. Lista fuera de la funcion o mal indentada.
-   Solucion: verifica indentacion dentro de la funcion de la ruta.
-4. La pagina carga, pero no muestra elementos.
-   Solucion: confirma que la lista no este vacia y que el bucle este dentro del `<ul>`.
+Recarga la pagina. Deberia verse el nuevo enlace automaticamente, **sin cambiar HTML**.
 
-## Preguntas de reflexion tecnica
+**Eso es el poder de los bucles: agregar datos sin modificar el template.**
 
-1. Que cambia entre renderizar una variable simple y renderizar una lista?
-2. Donde se ejecuta el bucle de Jinja: en el navegador o en Flask?
-3. Que ventaja aporta este patron para casos reales (productos, tareas, alumnos)?
+## Conceptos clave
+
+**Diccionarios en Python:**
+
+```python
+enlace = {
+    "nombre": "Flask",
+    "url": "https://flask.com"
+}
+```
+
+En HTML accedes con `{{ enlace.nombre }}` o `{{ enlace['nombre'] }}`
+
+**Listas de diccionarios:**
+
+```python
+enlaces = [
+    {"nombre": "Flask", "url": "..."},
+    {"nombre": "Python", "url": "..."}
+]
+```
+
+En HTML:
+```html
+{% for enlace in enlaces %}
+    {{ enlace.nombre }}
+{% endfor %}
+```
+
+## Preguntas de reflexion
+
+1. Si tienes 50 tareas en la lista, ¿cuantas lineas de HTML necesitas escribir?
+2. ¿Que pasa si accedes a una propiedad que no existe, como `{{ tarea.profesor }}`?
+3. ¿Como cambarias el bucle si quisieras mostrar solo las primeras 5 tareas?
 
 ## Entregable
 
-1. `app.py` con ruta `/recursos` funcional.
-2. `templates/recursos.html` creado.
-3. Lista de minimo 4 recursos definida en Python.
-4. Lista mostrada con bucle `{% for %}` en HTML.
-5. Navegacion hacia y desde la pagina de recursos.
-6. Explicacion corta del flujo:
-   `lista en Python -> render_template -> bucle Jinja -> HTML final en navegador`.
+Debes mostrar:
+
+1. `tareas.html` con un bucle `{% for %}` mostrando todas las tareas en una tabla
+2. `recursos.html` con un bucle mostrando todos los enlaces
+3. `informacion.html` con un bucle mostrando todos los objetivos
+4. Una captura de cada pagina mostrando los datos dinamicos en bucles
+5. Evidencia de que agregar un item a la lista en Python se refleja en HTML
+
+## Resumen
+
+Ya entiendes bucles en Jinja2. Esto es fundamental para mostrar datos reales.
+
+En la siguiente tarea, vamos a agregar un **formulario** para que estudiantes se inscriban en la clase.
+
