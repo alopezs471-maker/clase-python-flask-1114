@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Informacion - Portal Clase 1114</title>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/informacion">Informacion</a></li>
+            <li><a href="/recursos">Recursos</a></li>
+            <li><a href="/tareas">Tareas</a></li>
+            <li><a href="/inscripcion">Inscripcion</a></li>
+            <li><a href="/estudiantes">Estudiantes</a></li>
+        </ul>
+    </nav>
+
+    <h1>Informacion de la Clase</h1>
+    <p><strong>Aula:</strong> {{ aula }}</p>
+    <p><strong>estudiante:</strong> {{ estudiante }}</p>
+    <p><strong>Horario:</strong> {{ horario }}</p>
+
+    <h2>Objetivos</h2>
+    <ul>
+
+    </ul>
+    <h2>Objetivos de la clase</h2>
+<ul>
+    {% for objetivo in objetivos %}
+    <li>{{ objetivo }}</li>
+    {% endfor %}
+</ul>
+</body>
+</html>

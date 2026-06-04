@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recursos - Portal Clase 1114</title>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/informacion">Informacion</a></li>
+            <li><a href="/recursos">Recursos</a></li>
+            <li><a href="/tareas">Tareas</a></li>
+            <li><a href="/inscripcion">Inscripcion</a></li>
+            <li><a href="/estudiantes">Estudiantes</a></li>
+        </ul>
+    </nav>
+    <ul>
+    {% for enlace in enlaces %}
+    <li>
+        <a href="{{ enlace.url }}">{{ enlace.nombre }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+    <h1>Recursos Educativos</h1>
+    <p>Enlaces utiles para aprender mas:</p>
+
+   
+</body>
+</html>

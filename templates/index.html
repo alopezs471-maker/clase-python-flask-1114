@@ -6,15 +6,25 @@
     <title>Document</title>
 </head>
 <body>
+        <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/informacion">Informacion</a></li>
+            <li><a href="/recursos">Recursos</a></li>
+            <li><a href="/tareas">Tareas</a></li>
+            <li><a href="/inscripcion">Inscripcion</a></li>
+            <li><a href="/estudiantes">Estudiantes</a></li>
+        </ul>
+    </nav>
     <p>Estudiante:Alejandro</p>
     <p>Horario: Miercoles 16:45-18:10 | Jueves 12:30-14:20</p>
 
-    <title>Portal {{ profesor }}</title>
+    <title>Portal {{ estudiante }}</title>
 
     <h1>Bienvenidos al Portal de Clase 1114</h1>
     
     <h2>Informacion de la clase</h2>
-    <p><strong>Profesor:</strong> {{ profesor }}</p>
+    <p><strong>estudiante:</strong> {{ estudiante }}</p>
     <p><strong>Email:</strong> {{ email }}</p>
     <p><strong>Horario:</strong> {{ horario }}</p>
     <p><strong>Aula:</strong> {{ aula }}</p>
