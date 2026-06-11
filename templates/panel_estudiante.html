@@ -1,0 +1,24 @@
+<h2>Tus Tareas</h2>
+
+{% if tareas %}
+<table border="1">
+    <thead>
+        <tr>
+            <th>Tarea</th>
+            <th>Entrega</th>
+            <th>Descripcion</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tarea in tareas %}
+        <tr>
+            <td>{{ tarea.titulo }}</td>
+            <td>{{ tarea.fecha_entrega }}</td>
+            <td>{{ tarea.descripcion }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No hay tareas asignadas.</p>
+{% endif %}

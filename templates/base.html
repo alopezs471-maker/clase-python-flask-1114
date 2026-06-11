@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informacion - Clase 1114</title>
+    <title>{% block title %}Portal Clase 1114{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .navbar { background-color: #667eea; }
+        body { background-color: #f8f9fa; }
         .footer { background-color: #343a40; color: white; padding: 20px 0; margin-top: 40px; text-align: center; }
     </style>
 </head>
 <body>
-    <!-- NAVBAR (igual para todas las paginas) -->
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="/">Clase 1114</a>
@@ -25,39 +26,25 @@
                     <li class="nav-item"><a class="nav-link" href="/recursos">Recursos</a></li>
                     <li class="nav-item"><a class="nav-link" href="/tareas">Tareas</a></li>
                     <li class="nav-item"><a class="nav-link" href="/inscripcion">Inscripcion</a></li>
+                    {% if session.get('usuario_id') %}
+                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- CONTENIDO -->
-    <div class="container my-5">
-        <h1 class="mb-4">Informacion de la Clase</h1>
-        
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <h3>Detalles</h3>
-                <ul class="list-group">
-                    <li class="list-group-item"><strong>Aula:</strong> {{ aula }}</li>
-                    <li class="list-group-item"><strong>Profesor:</strong> {{ profesor }}</li>
-                    <li class="list-group-item"><strong>Horario:</strong> {{ horario }}</li>
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <h3>Objetivos</h3>
-                <ul class="list-group">
-                    {% for objetivo in objetivos %}
-                    <li class="list-group-item">{{ objetivo }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
+    <!-- CONTENIDO DE LA PAGINA -->
+    <main class="container my-5">
+        {% block content %}{% endblock %}
+    </main>
 
     <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 Portal Clase 1114</p>
+            <p>&copy; 2026 Portal Clase 1114 | Profesor: Henry Ortegon | Kyrbot Innovations</p>
         </div>
     </footer>
 
